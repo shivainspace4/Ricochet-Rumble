@@ -1,0 +1,65 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+.game-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.board {
+    display: grid;
+    grid-template-columns: repeat(8, 60px);
+    grid-template-rows: repeat(8, 60px);
+    gap: 2px;
+}
+
+.tile {
+    width: 60px;
+    height: 60px;
+    background-color: lightgrey;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.controls, .timer {
+    margin: 10px 0;
+}
+
+button {
+    margin: 0 5px;
+    padding: 5px 10px;
+}
+
+.piece {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+}
+
+.titan {
+    background-color: red;
+}
+
+.tank {
+    background-color: green;
+}
+
+.ricochet {
+    background-color: blue;
+}
+
+.semi-ricochet {
+    background-color: purple;
+}
+
+.cannon {
+    background-color: orange;
+}

@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ricochet Rumble</title>
+  <style>
+    /* Basic styling for the game board */
+    .game-board {
+      display: grid;
+      grid-template-columns: repeat(8, 50px);
+      grid-template-rows: repeat(8, 50px);
+      gap: 2px;
+      margin: 20px auto;
+      border: 2px solid black;
+    }
+
+    .game-board div {
+      width: 100%;
+      height: 100%;
+      background-color: #ccc;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+    }
+
+    /* Timer and control buttons styling */
+    .timer, .controls {
+      text-align: center;
+      margin: 10px auto;
+    }
+
+    .controls button {
+      margin: 0 5px;
+    }
+  </style>
+</head>
+<body>
+  <div class="game-board">
+    <!-- The game board grid will be generated dynamically using JavaScript -->
+  </div>
+
+  <div class="timer">
+    <span id="player1Timer">Player 1: 60s</span>
+    <span id="player2Timer">Player 2: 60s</span>
+  </div>
+
+  <div class="controls">
+    <button id="pauseButton">Pause</button>
+    <button id="resumeButton">Resume</button>
+    <button id="resetButton">Reset</button>
+  </div>
+
+  <script>
+    let player1Time = 60;
+    let player2Time = 60;
+    let currentPlayer = 1;
+    let timerInterval;
+
+    // Function to initialize the game board
+    function initializeBoard() {
+      const gameBoard = document.querySelector('.game-board');
+      for (let i = 0; i < 64; i++) {
+        const cell = document.createElement('div');
+        cell.dataset.row = Math.floor(i / 8);
+        cell.dataset.col = i % 8;
+        cell.addEventListener('click', handleCellClick);
+        gameBoard.appendChild(cell);
+      }
+    }
+
+    // Function to handle cell click
+    function handleCellClick(event) {
+      const cell = event.target;
+      if (!cell.textContent) {
+        cell.textContent = currentPlayer === 1 ? 'X' : 'O';
+        currentPlayer = currentPlayer === 1 ? 2 : 1;
+      }
+    }
+
+    // Function to update the timers
+    function updateTimers() {
+      document.getElementById('player1Timer').textContent = `Player 1: ${player1Time}s`;
+      document.getElementById('player2Timer').textContent = `Player 2: ${player2Time}s`;
+    }
+
+    // Function to start the game timer
+    function startTimer() {
+      timerInterval = setInterval(() => {
+        if (currentPlayer === 1) {
+          player1Time--;
+        } else {
+          player2Time--;
+        }
+        updateTimers();
+        if (player1Time === 0 || player2Time === 0) {
+          clearInterval(timerInterval);
+          alert(`Player ${player1Time === 0 ? 2 : 1} wins!`);
+        }
+      }, 1000);
+    }
+
+    // Function to pause the game timer
+    function pauseTimer() {
+      clearInterval(timerInterval);
+    }
+
+    // Function to resume the game timer
+    function resumeTimer() {
+      startTimer();
+    }
+
+    // Function to reset the game
+    function resetGame() {
+      clearInterval(timerInterval);
+      player1Time = 60;
+      player2Time = 60;
+      currentPlayer = 1;
+      updateTimers();
+      const cells = document.querySelectorAll('.game-board div');
+      cells.forEach(cell => cell.textContent = '');
+      startTimer();
+    }
+
+    // Event listeners for control buttons
+    document.getElementById('pauseButton').addEventListener('click', pauseTimer);
+    document.getElementById('resumeButton').addEventListener('click', resumeTimer);
+    document.getElementById('resetButton').addEventListener('click', resetGame);
+
+    // Initialize the game board
+    initializeBoard();
+    // Start the game timer
+    startTimer();
+  </script>
+</body>
+</html>
